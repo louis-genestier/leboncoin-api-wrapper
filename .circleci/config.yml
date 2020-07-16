@@ -11,7 +11,18 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
+  codecov:
+    executor:
+      name: node/default
+    steps:
+      - checkout
+      - node/with-cache:
+          steps:
+              - run: npm install
+              - run: npm run test
+              - run: npm run coverage
 workflows:
   build-and-test:
     jobs:
       - build-and-test
+      - codecov
