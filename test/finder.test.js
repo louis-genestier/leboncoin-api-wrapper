@@ -1,7 +1,8 @@
 const assert = require('assert');
 const Finder = require('../lib/finder');
 
-describe('Finder', () => {
+describe('Finder', function() {
+  this.timeout(0);
 
   const limit = 10;
   const finder = new Finder();
