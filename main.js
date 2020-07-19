@@ -1,1 +1,1 @@
-module.exports = require('./lib/finder');
+module.exports.Finder = require('./lib/finder');
