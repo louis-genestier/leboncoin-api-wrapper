@@ -46,9 +46,46 @@ describe('Finder', function() {
     assert.strictEqual(finder.getCategory(), '15');
   });
 
+  it('should set a maximum price', () => {
+    const finder = new Finder();
+    const maxPrice = 15;
+    finder.setMaxPrice(maxPrice);
+    assert.strictEqual(finder.getMaxPrice(), maxPrice);
+  });
+
+  it('should set a minimum price', () => {
+    const finder = new Finder();
+    const minPrice = 50;
+    finder.setMinPrice(minPrice);
+    assert.strictEqual(finder.getMinPrice(), minPrice);
+  });
+
   it('should returns ads', async() => {
     const data = await finder.search();
     assert.strictEqual(data.ads.length, limit);
+  });
+
+  describe('buildBody', () => {
+    it('should returns the right category', () => {
+      finder.setCategory('livres');
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.category.id, '27');
+    });
+
+    it('should returns the right max price', () => {
+      finder.setMaxPrice(15);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.ranges.price.max, 15);
+    });
+
+    it('should returns the right min price', () => {
+      finder.setMinPrice(10);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.ranges.price.min, 10);
+    })
   });
 
   describe('getPhoneNumber', () => {
