@@ -5,6 +5,15 @@ describe('Finder', function() {
   this.timeout(0);
 
   const limit = 10;
+  const locations = [
+    {
+      'city': 'Paris',
+      'zipcode': '75005',
+    }, {
+      'city': 'Montreuil',
+      'zipcode': '93100',
+    },
+  ];
   const finder = new Finder();
   finder.setOrder('desc');
   finder.setKeywords('livre');
@@ -60,6 +69,12 @@ describe('Finder', function() {
     assert.strictEqual(finder.getMinPrice(), minPrice);
   });
 
+  it('should set a and get the locations', () => {
+    const finder = new Finder();
+    finder.setLocations(locations);
+    assert.strictEqual(finder.getLocations(), locations);
+  });
+
   it('should returns ads', async() => {
     const data = await finder.search();
     assert.strictEqual(data.ads.length, limit);
@@ -85,7 +100,14 @@ describe('Finder', function() {
       const body = finder.buildBody();
       const parsed = JSON.parse(body);
       assert.strictEqual(parsed.filters.ranges.price.min, 10);
-    })
+    });
+
+    it('should returns the right locations', () => {
+      finder.setLocations(locations);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(JSON.stringify(parsed.filters.location.locations), JSON.stringify(locations));
+    });
   });
 
   describe('getPhoneNumber', () => {
