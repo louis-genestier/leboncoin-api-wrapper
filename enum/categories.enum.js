@@ -14,7 +14,7 @@ const categoriesEnum = Object.freeze({
   'EQUIPEMENT NAUTISME': 51,
 
   'IMMOBILIER': 8,
-  'VENTES IMMOBILERES': 9,
+  'VENTES IMMOBILIERES': 9,
   'LOCATIONS': 10,
   'COLOCATIONS': 11,
   'BUREAUX & COMMERCES': 13,
