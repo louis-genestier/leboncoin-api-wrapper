@@ -75,12 +75,30 @@ describe('Finder', function() {
     assert.strictEqual(finder.getLocations(), locations);
   });
 
+  it('should set a minimum amount of rooms', () => {
+    const finder = new Finder();
+    const minRooms = 3;
+
+    finder.setMinRooms(minRooms);
+    assert.strictEqual(finder.getMinRooms(), minRooms);
+  });
+
+  it('should set a maximum amount of rooms', () => {
+    const finder = new Finder();
+    const maxRooms = 3;
+
+    finder.setMaxRooms(maxRooms);
+    assert.strictEqual(finder.getMaxRooms(), maxRooms);
+  });
+
   it('should returns ads', async() => {
     const data = await finder.search();
     assert.strictEqual(data.ads.length, limit);
   });
 
   describe('buildBody', () => {
+    const finder = new Finder();
+
     it('should returns the right category', () => {
       finder.setCategory('livres');
       const body = finder.buildBody();
@@ -108,6 +126,15 @@ describe('Finder', function() {
       const parsed = JSON.parse(body);
       assert.strictEqual(JSON.stringify(parsed.filters.location.locations), JSON.stringify(locations));
     });
+
+    it('should returns the right amount of minimum rooms', () => {
+      const minRooms = 3;
+      finder.setMinRooms(minRooms);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.ranges.rooms.min, minRooms);
+    });
+
   });
 
   describe('getPhoneNumber', () => {
