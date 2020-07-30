@@ -91,6 +91,44 @@ describe('Finder', function() {
     assert.strictEqual(finder.getMaxRooms(), maxRooms);
   });
 
+  it('should set a minimum square', () => {
+    const finder = new Finder();
+    const minSquare = 30;
+
+    finder.setMinSquare(minSquare);
+    assert.strictEqual(finder.getMinSquare(), minSquare);
+  });
+
+  it('should set a maximum square', () => {
+    const finder = new Finder();
+    const maxSquare = 30;
+
+    finder.setMaxSquare(maxSquare);
+    assert.strictEqual(finder.getMaxSquare(), maxSquare);
+  });
+
+  it('should set the right estate type', () => {
+    const finder = new Finder();
+    const types = ['appartement'];
+
+    finder.setEstateType(types);
+    assert.strictEqual(finder.getEstateTypes()[0], '2');
+  })
+
+  it('should set furnished', () => {
+    const finder = new Finder();
+    finder.setFurnished(true);
+    assert.strictEqual(finder.getFurnished()[0], '1');
+  });
+
+  it('should set the right sell type', () => {
+    const finder = new Finder();
+    const types = ['old', 'new'];
+
+    finder.setSellType(types);
+    assert.strictEqual(finder.getSellType()[1], 'new');
+  });
+
   it('should returns ads', async() => {
     const data = await finder.search();
     assert.strictEqual(data.ads.length, limit);
@@ -133,6 +171,37 @@ describe('Finder', function() {
       const body = finder.buildBody();
       const parsed = JSON.parse(body);
       assert.strictEqual(parsed.filters.ranges.rooms.min, minRooms);
+    });
+
+    it('should returns the right min square', () => {
+      const minSquare = 25;
+      finder.setMinSquare(minSquare);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.ranges.square.min, minSquare);
+    });
+
+    it('should returns the right estate type', () => {
+      const estateType = ['appartement'];
+      finder.setEstateType(estateType);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.enums.real_estate_type[0], '2');
+    });
+
+    it('should returns the right furnished', () => {
+      finder.setFurnished(false);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.enums.furnished[0], '2');
+    });
+
+    it('should returns the right sell type', () => {
+      const sellType = ['old'];
+      finder.setSellType(sellType);
+      const body = finder.buildBody();
+      const parsed = JSON.parse(body);
+      assert.strictEqual(parsed.filters.enums.immo_sell_type[0], sellType[0]);
     });
 
   });
